@@ -29,53 +29,6 @@ def extract_term_code_from_input(html_content):
         return tag['value']
     return "UNKNOWN"
 
-def minify_schedule_html(input_path, output_path):
-    """
-    精简 HTML，仅保留 student_name_id、term_code 和已注册课程对象
-    """
-    with open(input_path, 'r', encoding='utf-8') as f:
-        html = f.read()
-
-    # 提取课程对象
-    selected_blocks = extract_registered_or_waitlisted_blocks(html)
-
-    # 提取课程 ID 和 term_code
-    print("✅ 保留的注册/候补课程 ID：")
-    for block in selected_blocks:
-        match = re.search(r'CourseDetails\.(t\d+)', block)
-        if match:
-            print(match.group(1))
-
-    term_code = extract_term_code_from_input(html)
-    print(f"\n🎓 学期代码 (termCode)：{term_code}")
-
-    # 构造精简 HTML
-    soup = BeautifulSoup(html, 'html.parser')
-    new_soup = BeautifulSoup('<html><head><meta charset="utf-8"></head><body></body></html>', 'html.parser')
-    new_body = new_soup.body
-
-    # 添加 student_name_id
-    student_div = soup.find('div', id='student_name_id')
-    if student_div:
-        new_body.append(student_div)
-
-    # 添加 term_code div
-    term_div = new_soup.new_tag('div', id='term_code')
-    term_div.string = term_code
-    new_body.append(term_div)
-
-    # 添加 script 块
-    for js_code in selected_blocks:
-        script_tag = new_soup.new_tag('script')
-        script_tag.string = js_code
-        new_body.append(script_tag)
-
-    # 保存输出文件
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(new_soup.prettify())
-
-    print(f"\n✅ 精简完成，输出文件：{output_path}")
-
 def generate_minified_html(original_html):
     """
     从原始 HTML 文本生成精简版 HTML（返回字符串和 term_code）
@@ -105,13 +58,3 @@ def generate_minified_html(original_html):
         body.append(script_tag)
 
     return str(new_soup.prettify()), term_code
-
-# 示例运行
-if __name__ == '__main__':
-    input_file = 'ss.html'
-    output_file = 'Schedule_Slimmed.html'
-
-    if os.path.exists(input_file):
-        minify_schedule_html(input_file, output_file)
-    else:
-        print(f"❌ 找不到文件：{input_file}")
