@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Exporter - 日历导出工具</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #f8f8f8;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+            color: #333;
+        }
+        h1 {
+            color: #0055aa;
+            font-size: 28px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .upload-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        input[type="file"] {
+            padding: 5px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005fa3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📅 Schedule Exporter</h1>
+    <p>这是一个简单实用的日历导出工具。</p>
+    <p>你可以上传一个课表文本文件，系统将会自动读取内容展示课程求和结果或导出格式。</p>
+
+    <div class="upload-box">
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <label for="file">选择你的课表：</label><br><br>
+            <input type="file" name="file" accept=".html" required><br>
+            <button type="submit">📤 上传并处理</button>
+        </form>
+    </div>
+
+</body>
+</html>
